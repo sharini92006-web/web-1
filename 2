@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Login & Signup UI</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    background:linear-gradient(135deg,#4F46E5,#06B6D4);
+}
+
+.container{
+    width:400px;
+    max-width:95%;
+    background:#fff;
+    border-radius:15px;
+    box-shadow:0 15px 35px rgba(0,0,0,.2);
+    overflow:hidden;
+}
+
+.header{
+    display:flex;
+}
+
+.header button{
+    width:50%;
+    padding:18px;
+    border:none;
+    cursor:pointer;
+    background:#f3f3f3;
+    font-size:18px;
+    font-weight:bold;
+    transition:.3s;
+}
+
+.header button.active{
+    background:#4F46E5;
+    color:#fff;
+}
+
+.form{
+    padding:35px;
+    display:none;
+}
+
+.form.active{
+    display:block;
+}
+
+.form h2{
+    text-align:center;
+    margin-bottom:25px;
+    color:#333;
+}
+
+.input-group{
+    margin-bottom:18px;
+}
+
+.input-group input{
+    width:100%;
+    padding:14px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    outline:none;
+    font-size:16px;
+}
+
+.password-box{
+    position:relative;
+}
+
+.password-box span{
+    position:absolute;
+    right:15px;
+    top:50%;
+    transform:translateY(-50%);
+    cursor:pointer;
+    font-size:14px;
+    color:#4F46E5;
+}
+
+.submit-btn{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:8px;
+    background:#4F46E5;
+    color:#fff;
+    font-size:16px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.submit-btn:hover{
+    background:#3730A3;
+}
+
+p{
+    text-align:center;
+    margin-top:20px;
+    color:#555;
+}
+
+a{
+    color:#4F46E5;
+    text-decoration:none;
+}
+
+@media(max-width:500px){
+
+.container{
+    width:95%;
+}
+
+.form{
+    padding:25px;
+}
+
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="header">
+<button class="active" onclick="showLogin()">Login</button>
+<button onclick="showSignup()">Signup</button>
+</div>
+
+<!-- Login -->
+
+<div class="form active" id="loginForm">
+
+<h2>Login</h2>
+
+<div class="input-group">
+<input type="email" placeholder="Email Address">
+</div>
+
+<div class="input-group password-box">
+<input type="password" id="loginPassword" placeholder="Password">
+<span onclick="togglePassword('loginPassword',this)">Show</span>
+</div>
+
+<button class="submit-btn">Login</button>
+
+<p>Don't have an account?
+<a href="#" onclick="showSignup()">Sign Up</a>
+</p>
+
+</div>
+
+<!-- Signup -->
+
+<div class="form" id="signupForm">
+
+<h2>Create Account</h2>
+
+<div class="input-group">
+<input type="text" placeholder="Full Name">
+</div>
+
+<div class="input-group">
+<input type="email" placeholder="Email Address">
+</div>
+
+<div class="input-group password-box">
+<input type="password" id="signupPassword" placeholder="Password">
+<span onclick="togglePassword('signupPassword',this)">Show</span>
+</div>
+
+<div class="input-group password-box">
+<input type="password" id="confirmPassword" placeholder="Confirm Password">
+<span onclick="togglePassword('confirmPassword',this)">Show</span>
+</div>
+
+<button class="submit-btn">Create Account</button>
+
+<p>Already have an account?
+<a href="#" onclick="showLogin()">Login</a>
+</p>
+
+</div>
+
+</div>
+
+<script>
+
+const buttons=document.querySelectorAll(".header button");
+
+function showLogin(){
+
+document.getElementById("loginForm").classList.add("active");
+document.getElementById("signupForm").classList.remove("active");
+
+buttons[0].classList.add("active");
+buttons[1].classList.remove("active");
+
+}
+
+function showSignup(){
+
+document.getElementById("signupForm").classList.add("active");
+document.getElementById("loginForm").classList.remove("active");
+
+buttons[1].classList.add("active");
+buttons[0].classList.remove("active");
+
+}
+
+function togglePassword(id,element){
+
+const input=document.getElementById(id);
+
+if(input.type==="password"){
+input.type="text";
+element.innerHTML="Hide";
+}
+else{
+input.type="password";
+element.innerHTML="Show";
+}
+
+}
+
+</script>
+
+</body>
+</html>
