@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login & Signup UI</title>
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    background:linear-gradient(135deg,#4F46E5,#06B6D4);
+}
+.container{
+    width:400px;
+    max-width:95%;
+    background:#fff;
+    border-radius:15px;
+    box-shadow:0 15px 35px rgba(0,0,0,.2);
+    overflow:hidden;
+}
+.header{
+    display:flex;
+}
+.header button{
+    width:50%;
+    padding:18px;
+    border:none;
+    cursor:pointer;
+    background:#f3f3f3;
+    font-size:18px;
+    font-weight:bold;
+    transition:.3s;
+}
+.header button.active{
+    background:#4F46E5;
+    color:#fff;
+}
+.form{
+    padding:35px;
+    display:none;
+}
+.form.active{
+    display:block;
+}
+.form h2{
+    text-align:center;
+    margin-bottom:25px;
+    color:#333;
+}
+.form-desc{
+    text-align:center;
+    color:#666;
+    font-size:14px;
+    margin-bottom:22px;
+    line-height:1.5;
+}
+.input-group{
+    margin-bottom:18px;
+}
+.input-group input{
+    width:100%;
+    padding:14px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    outline:none;
+    font-size:16px;
+}
+.input-group input:focus{
+    border-color:#4F46E5;
+}
+.password-box{
+    position:relative;
+}
+.password-box span{
+    position:absolute;
+    right:15px;
+    top:50%;
+    transform:translateY(-50%);
+    cursor:pointer;
+    font-size:14px;
+    color:#4F46E5;
+    user-select:none;
+}
+.forgot-link{
+    display:block;
+    text-align:right;
+    margin:-8px 0 18px;
+    font-size:14px;
+}
+.submit-btn{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:8px;
+    background:#4F46E5;
+    color:#fff;
+    font-size:16px;
+    cursor:pointer;
+    transition:.3s;
+}
+.submit-btn:hover{
+    background:#3730A3;
+}
+.message{
+    padding:12px 14px;
+    border-radius:8px;
+    font-size:14px;
+    margin-bottom:18px;
+    display:none;
+    word-break:break-word;
+}
+.message.show{
+    display:block;
+}
+.message.success{
+    background:#ECFDF5;
+    color:#047857;
+    border:1px solid #A7F3D0;
+}
+.message.error{
+    background:#FEF2F2;
+    color:#B91C1C;
+    border:1px solid #FECACA;
+}
+p{
+    text-align:center;
+    margin-top:20px;
+    color:#555;
+}
+a{
+    color:#4F46E5;
+    text-decoration:none;
+}
+a:hover{
+    text-decoration:underline;
+}
+.back-link{
+    display:inline-block;
+    margin-bottom:18px;
+    font-size:14px;
+}
+@media(max-width:500px){
+.container{
+    width:95%;
+}
+.form{
+    padding:25px;
+}
+}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header" id="formHeader">
+<button type="button" class="active" onclick="showLogin()">Login</button>
+<button type="button" onclick="showSignup()">Signup</button>
+</div>
+
+<!-- Login -->
+<div class="form active" id="loginForm">
+<h2>Login</h2>
+<div class="message" id="loginMessage"></div>
+<div class="input-group">
+<input type="email" id="loginEmail" placeholder="Email Address">
+</div>
+<div class="input-group password-box">
+<input type="password" id="loginPassword" placeholder="Password">
+<span onclick="togglePassword('loginPassword',this)">Show</span>
+</div>
+<a class="forgot-link" href="#" onclick="showForgotPassword(); return false;">Forgot Password?</a>
+<button type="button" class="submit-btn" onclick="handleLogin()">Login</button>
+<p>Don't have an account?
+<a href="#" onclick="showSignup(); return false;">Sign Up</a>
+</p>
+</div>
+
+<!-- Signup -->
+<div class="form" id="signupForm">
+<h2>Create Account</h2>
+<div class="message" id="signupMessage"></div>
+<div class="input-group">
+<input type="text" id="signupName" placeholder="Full Name">
+</div>
+<div class="input-group">
+<input type="email" id="signupEmail" placeholder="Email Address">
+</div>
+<div class="input-group password-box">
+<input type="password" id="signupPassword" placeholder="Password">
+<span onclick="togglePassword('signupPassword',this)">Show</span>
+</div>
+<div class="input-group password-box">
+<input type="password" id="confirmPassword" placeholder="Confirm Password">
+<span onclick="togglePassword('confirmPassword',this)">Show</span>
+</div>
+<button type="button" class="submit-btn" onclick="handleSignup()">Create Account</button>
+<p>Already have an account?
+<a href="#" onclick="showLogin(); return false;">Login</a>
+</p>
+</div>
+
+<!-- Forgot Password -->
+<div class="form" id="forgotPasswordForm">
+<a class="back-link" href="#" onclick="showLogin(); return false;">&larr; Back to Login</a>
+<h2>Forgot Password</h2>
+<p class="form-desc">Enter your email address and we'll send you a link to reset your password.</p>
+<div class="message" id="forgotMessage"></div>
+<div class="input-group">
+<input type="email" id="forgotEmail" placeholder="Email Address">
+</div>
+<button type="button" class="submit-btn" onclick="handleForgotPassword()">Send Reset Link</button>
+<p>Remember your password?
+<a href="#" onclick="showLogin(); return false;">Login</a>
+</p>
+</div>
+
+<!-- Reset Password -->
+<div class="form" id="resetPasswordForm">
+<a class="back-link" href="#" onclick="showLogin(); return false;">&larr; Back to Login</a>
+<h2>Reset Password</h2>
+<p class="form-desc">Enter your new password below.</p>
+<div class="message" id="resetMessage"></div>
+<div class="input-group password-box">
+<input type="password" id="newPassword" placeholder="New Password">
+<span onclick="togglePassword('newPassword',this)">Show</span>
+</div>
+<div class="input-group password-box">
+<input type="password" id="resetConfirmPassword" placeholder="Confirm New Password">
+<span onclick="togglePassword('resetConfirmPassword',this)">Show</span>
+</div>
+<button type="button" class="submit-btn" onclick="handleResetPassword()">Reset Password</button>
+</div>
+</div>
+
+<script>
+const buttons=document.querySelectorAll(".header button");
+const forms={
+    login:document.getElementById("loginForm"),
+    signup:document.getElementById("signupForm"),
+    forgot:document.getElementById("forgotPasswordForm"),
+    reset:document.getElementById("resetPasswordForm")
+};
+const formHeader=document.getElementById("formHeader");
+let resetToken="";
+
+function isValidEmail(email){
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function getUsers(){
+    return JSON.parse(localStorage.getItem("users")||"[]");
+}
+
+function saveUsers(users){
+    localStorage.setItem("users",JSON.stringify(users));
+}
+
+function showMessage(id,text,type){
+    const el=document.getElementById(id);
+    el.textContent=text;
+    el.className="message show "+type;
+}
+
+function hideMessage(id){
+    const el=document.getElementById(id);
+    el.className="message";
+    el.textContent="";
+}
+
+function hideAllForms(){
+    Object.values(forms).forEach(form=>form.classList.remove("active"));
+}
+
+function showForm(name){
+    hideAllForms();
+    forms[name].classList.add("active");
+    formHeader.style.display=(name==="login"||name==="signup")?"flex":"none";
+}
+
+function showLogin(){
+    showForm("login");
+    buttons[0].classList.add("active");
+    buttons[1].classList.remove("active");
+    hideMessage("loginMessage");
+}
+
+function showSignup(){
+    showForm("signup");
+    buttons[1].classList.add("active");
+    buttons[0].classList.remove("active");
+    hideMessage("signupMessage");
+}
+
+function showForgotPassword(){
+    showForm("forgot");
+    hideMessage("forgotMessage");
+    document.getElementById("forgotEmail").value="";
+}
+
+function showResetPassword(token){
+    resetToken=token||"";
+    showForm("reset");
+    hideMessage("resetMessage");
+    document.getElementById("newPassword").value="";
+    document.getElementById("resetConfirmPassword").value="";
+}
+
+function togglePassword(id,element){
+    const input=document.getElementById(id);
+    if(input.type==="password"){
+        input.type="text";
+        element.textContent="Hide";
+    }else{
+        input.type="password";
+        element.textContent="Show";
+    }
+}
+
+function handleSignup(){
+    hideMessage("signupMessage");
+    const name=document.getElementById("signupName").value.trim();
+    const email=document.getElementById("signupEmail").value.trim().toLowerCase();
+    const password=document.getElementById("signupPassword").value;
+    const confirm=document.getElementById("confirmPassword").value;
+
+    if(!name||!email||!password||!confirm){
+        showMessage("signupMessage","Please fill in all fields.","error");
+        return;
+    }
+    if(!isValidEmail(email)){
+        showMessage("signupMessage","Please enter a valid email address.","error");
+        return;
+    }
+    if(password.length<6){
+        showMessage("signupMessage","Password must be at least 6 characters.","error");
+        return;
+    }
+    if(password!==confirm){
+        showMessage("signupMessage","Passwords do not match.","error");
+        return;
+    }
+
+    const users=getUsers();
+    if(users.some(user=>user.email===email)){
+        showMessage("signupMessage","An account with this email already exists.","error");
+        return;
+    }
+
+    users.push({name,email,password});
+    saveUsers(users);
+    showMessage("signupMessage","Account created successfully! You can now log in.","success");
+    setTimeout(showLogin,1500);
+}
+
+function handleLogin(){
+    hideMessage("loginMessage");
+    const email=document.getElementById("loginEmail").value.trim().toLowerCase();
+    const password=document.getElementById("loginPassword").value;
+
+    if(!email||!password){
+        showMessage("loginMessage","Please enter your email and password.","error");
+        return;
+    }
+
+    const user=getUsers().find(u=>u.email===email&&u.password===password);
+    if(!user){
+        showMessage("loginMessage","Invalid email or password.","error");
+        return;
+    }
+
+    showMessage("loginMessage","Login successful! Welcome, "+user.name+".","success");
+}
+
+function handleForgotPassword(){
+    hideMessage("forgotMessage");
+    const email=document.getElementById("forgotEmail").value.trim().toLowerCase();
+
+    if(!email){
+        showMessage("forgotMessage","Please enter your email address.","error");
+        return;
+    }
+    if(!isValidEmail(email)){
+        showMessage("forgotMessage","Please enter a valid email address.","error");
+        return;
+    }
+
+    const user=getUsers().find(u=>u.email===email);
+    if(!user){
+        showMessage("forgotMessage","No account found with that email address.","error");
+        return;
+    }
+
+    const token=Math.random().toString(36).slice(2)+Date.now().toString(36);
+    const resets=JSON.parse(localStorage.getItem("passwordResets")||"{}");
+    resets[token]={email,expires:Date.now()+3600000};
+    localStorage.setItem("passwordResets",JSON.stringify(resets));
+
+    const resetLink=window.location.href.split("#")[0]+"#reset="+token;
+    showMessage("forgotMessage","Reset link sent! (Demo link: "+resetLink+")","success");
+    setTimeout(()=>showResetPassword(token),2000);
+}
+
+function handleResetPassword(){
+    hideMessage("resetMessage");
+    const password=document.getElementById("newPassword").value;
+    const confirm=document.getElementById("resetConfirmPassword").value;
+
+    if(!password||!confirm){
+        showMessage("resetMessage","Please fill in both password fields.","error");
+        return;
+    }
+    if(password.length<6){
+        showMessage("resetMessage","Password must be at least 6 characters.","error");
+        return;
+    }
+    if(password!==confirm){
+        showMessage("resetMessage","Passwords do not match.","error");
+        return;
+    }
+
+    const resets=JSON.parse(localStorage.getItem("passwordResets")||"{}");
+    const reset=resets[resetToken];
+    if(!reset||reset.expires<Date.now()){
+        showMessage("resetMessage","This reset link is invalid or has expired.","error");
+        return;
+    }
+
+    const users=getUsers();
+    const user=users.find(u=>u.email===reset.email);
+    if(!user){
+        showMessage("resetMessage","Account not found.","error");
+        return;
+    }
+
+    user.password=password;
+    saveUsers(users);
+    delete resets[resetToken];
+    localStorage.setItem("passwordResets",JSON.stringify(resets));
+    resetToken="";
+
+    showMessage("resetMessage","Password reset successfully! You can now log in.","success");
+    setTimeout(showLogin,1500);
+}
+
+function checkResetLink(){
+    const hash=window.location.hash;
+    if(!hash.startsWith("#reset=")) return;
+
+    const token=hash.replace("#reset=","");
+    const resets=JSON.parse(localStorage.getItem("passwordResets")||"{}");
+    if(resets[token]&&resets[token].expires>Date.now()){
+        showResetPassword(token);
+    }else{
+        showForgotPassword();
+        showMessage("forgotMessage","This reset link is invalid or has expired.","error");
+    }
+}
+
+document.addEventListener("keydown",function(e){
+    if(e.key!=="Enter") return;
+    if(forms.login.classList.contains("active")) handleLogin();
+    else if(forms.signup.classList.contains("active")) handleSignup();
+    else if(forms.forgot.classList.contains("active")) handleForgotPassword();
+    else if(forms.reset.classList.contains("active")) handleResetPassword();
+});
+
+checkResetLink();
+</script>
+</body>
+</html>
